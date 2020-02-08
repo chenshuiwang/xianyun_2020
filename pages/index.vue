@@ -13,7 +13,11 @@
     <div class="banner-content">
       <div class="search-bar">
         <el-row type="flex" class="search-tab">
-          <span v-for="(item,index) in options" :key="index" @click="handleclick(index)">
+          <span 
+          v-for="(item,index) in options" 
+          :key="index" 
+          @click="handleclick(index)"
+          :class="{active: index === current}">
             <i>{{item.name}}</i>
           </span>
         </el-row>

@@ -13,16 +13,38 @@
           <nuxt-link to="/hotel">酒店</nuxt-link>
           <nuxt-link to="/air">国内机票</nuxt-link>
         </el-row>
-        <div class="login">
-          <nuxt-link to="/user/login">登录/注册</nuxt-link>
-        </div>
+        <el-row type="flex" align="middle" class="login">
+          <el-dropdown v-if="$store.state.user.userInfo.token">
+            <el-row type="flex" align="middle" class="el-dropdown-link">
+              <nuxt-link to="#">
+                <img :src="$axios.defaults.baseURL+$store.state.user.userInfo.user.defaultAvatar" />
+                {{$store.state.user.userInfo.user.nickname}}
+              </nuxt-link>
+              <i class="el-icon-caret-bottom el-icon--right"></i>
+            </el-row>
+            <el-dropdown-menu slot="dropdown">
+              <el-dropdown-item>
+                <nuxt-link to="#">个人中心</nuxt-link>
+              </el-dropdown-item>
+              <el-dropdown-item>
+                <div @click="handleLogout">退出</div>
+              </el-dropdown-item>
+            </el-dropdown-menu>
+          </el-dropdown>
+          <nuxt-link to="/user/login" v-else>登录/注册</nuxt-link>
+        </el-row>
       </el-row>
     </div>
   </div>
 </template>
 
 <script>
-export default {};
+export default {
+  methods: {
+    handleLogout() {}
+  },
+  mounted() {}
+};
 </script>
 
 <style lang='less' scoped>
@@ -48,17 +70,55 @@ export default {};
       padding: 0 20px;
       box-sizing: border-box;
       height: 60px;
-      &:hover {
+      &:hover,
+      &:focus,
+      &:active {
         border-bottom: 5px #409eff solid;
         color: #409eff;
       }
     }
-    .nuxt-link-active {
+    /deep/.nuxt-link-exact-active {
       background-color: #409eff;
       color: #fff !important;
     }
   }
-  .login {
+  .message {
+    height: 36px;
+    line-height: 1;
+    cursor: pointer;
+    .el-icon-bell {
+      margin-right: 2px;
+      font-size: 18px;
+    }
+  }
+
+  .el-dropdown-link {
+    margin-left: 20px;
+
+    &:hover {
+      img {
+        border-color: #409eff;
+      }
+    }
+
+    a {
+      display: block;
+    }
+
+    img {
+      width: 32px;
+      height: 32px;
+      vertical-align: middle;
+      border: 2px #fff solid;
+      border-radius: 50px;
+    }
+  }
+
+  .account-link {
+    font-size: 14px;
+    margin-left: 10px;
+    color: #666;
+
     &:hover {
       color: #409eff;
       text-decoration: underline;
