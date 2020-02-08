@@ -31,7 +31,7 @@
               </el-dropdown-item>
             </el-dropdown-menu>
           </el-dropdown>
-          <nuxt-link to="/user/login" v-else>登录/注册</nuxt-link>
+          <nuxt-link to="/user/login" v-else class="login">登录/注册</nuxt-link>
         </el-row>
       </el-row>
     </div>
@@ -114,7 +114,7 @@ export default {
     }
   }
 
-  .account-link {
+  .login {
     font-size: 14px;
     margin-left: 10px;
     color: #666;
