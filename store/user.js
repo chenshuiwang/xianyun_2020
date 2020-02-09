@@ -18,5 +18,27 @@ export const actions = {
             console.log(res.data);
             store.commit("setUserInfo", res.data)
           });
+    },
+    getCaptcha(store,text){
+        return this.$axios({
+            url: "/captchas",
+            method: "POST",
+            data: {
+              tel: text
+            }
+          }).then(res => {
+            //console.log(res.data);
+            return res;
+          });
+    },
+    register(store,data){
+        return this.$axios({
+            url:'/accounts/register',
+            method: 'POST',
+            data
+        }).then(res => {
+            store.commit('setUserInfo',res.data)
+            return res
+        })
     }
 };

@@ -41,7 +41,12 @@
 <script>
 export default {
   methods: {
-    handleLogout() {}
+    handleLogout() {
+      this.$store.commit('user/setUserInfo',{
+        token: '',
+        userInfo: {}
+      })
+    }
   },
   mounted() {}
 };

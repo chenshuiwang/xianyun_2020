@@ -37,7 +37,7 @@ export default {
   methods: {
     // 提交登录
     handleLoginSubmit() {
-      console.log(this.form);
+      //console.log(this.form);
       this.$refs.form.validate(valid => {
         if (valid) {
           this.$store.dispatch("user/login", this.form).then(() => {
