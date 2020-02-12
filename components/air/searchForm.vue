@@ -36,7 +36,7 @@
       </el-form-item>
       <el-form-item label="到达城市">
         <el-autocomplete
-          v-model="form.desCity"
+          v-model="form.destCity"
           :fetch-suggestions="queryDestSearch"
           placeholder="请搜索到达城市"
           @select="handleDesSelect"
@@ -46,7 +46,14 @@
       </el-form-item>
       <el-form-item label="出发时间">
         <!-- change 用户确认选择日期时触发 -->
-        <el-date-picker type="date" placeholder="请选择日期" style="width: 100%;" @change="handleDate" v-model="form.defartDate"></el-date-picker>
+        <el-date-picker
+          type="date"
+          placeholder="请选择日期"
+          style="width: 100%;"
+          @change="handleDate"
+          v-model="form.departDate"
+          :picker-options="pickerOptions1"
+        ></el-date-picker>
       </el-form-item>
       <el-form-item label>
         <el-button style="width:100%;" type="primary" icon="el-icon-search" @click="handleSubmit">搜索</el-button>
@@ -59,7 +66,7 @@
 </template>
 
 <script>
-import moment from 'moment'
+import moment from "moment";
 export default {
   data() {
     return {
@@ -71,17 +78,24 @@ export default {
       form: {
         departCity: "",
         departCode: "",
-        desCity: "",
-        desCode: "",
+        destCity: "",
+        destCode: "",
         departDate: ""
       },
       defartData: [],
-      desData: []
+      desData: [],
+      pickerOptions1: {
+        disabledDate(time) {
+          return time.getTime()+3600 * 1000 * 24 < Date.now();
+        }
+      }
     };
   },
   methods: {
     queryDepartSearch(value, cb) {
       if (!value) {
+        this.defartData = [];
+        cb([]);
         return;
       }
       this.$axios({
@@ -115,6 +129,9 @@ export default {
           this.desData = arr;
           cb(arr);
         });
+      } else {
+        this.desData = [];
+        cb([]);
       }
     },
     handleDepartSelect(item) {
@@ -122,42 +139,42 @@ export default {
       this.form.departCode = item.sort;
     },
     handleDesSelect(item) {
-      this.form.desCity = item.value;
-      this.form.desCode = item.sort;
+      this.form.destCity = item.value;
+      this.form.destCode = item.sort;
     },
     // 确认选择日期时触发
     handleDate(value) {
-        this.form.departDate = moment(value).format("YYYY/MM/DD");
-        console.log(this.form.departDate)
+      this.form.departDate = moment(value).format("YYYY/MM/DD");
+      //console.log(this.form.departDate);
     },
 
     // 触发和目标城市切换时触发
     handleReverse() {
-        const { departCity,departCode,desCity,desCode} = this.form;
-        this.form.departCode = desCode;
-        this.form.departCity = desCity;
-        this.form.desCode = departCode;
-        this.form.desCity = departCity;
+      const { departCity, departCode, destCity, destCode } = this.form;
+      this.form.departCode = destCode;
+      this.form.departCity = destCity;
+      this.form.destCode = departCode;
+      this.form.destCity = departCity;
     },
 
     // 提交表单是触发
     handleSubmit() {
-      if(!this.form.departCity){
-          this.$message.error('请输入开始城市');
-          return;
+      if (!this.form.departCity) {
+        this.$message.error("请输入开始城市");
+        return;
       }
-      if(!this.form.desCity){
-          this.$message.error('请输入到达城市');
-          return;
+      if (!this.form.destCity) {
+        this.$message.error("请输入到达城市");
+        return;
       }
-      if(!this.form.departDate){
-          this.$message.error('请选择时间');
-          return;
+      if (!this.form.departDate) {
+        this.$message.error("请选择时间");
+        return;
       }
       this.$router.push({
-          path:'/air/flights',
-          query:this.form
-      })
+        path: "/air/flights",
+        query: this.form
+      });
     },
     departBlur() {
       if (this.defartData.length != 0) {
@@ -167,8 +184,17 @@ export default {
     },
     desBlur() {
       if (this.desData.length != 0) {
-        this.form.desCity = this.desData[0].value;
-        this.form.desCode = this.desData[0].code;
+        this.form.destCity = this.desData[0].value;
+        this.form.destCode = this.desData[0].code;
+      }
+    },
+    handleSearchTab(item, index) {
+      if (index === 1) {
+        this.$confirm("目前暂不支持往返，请使用单程选票！", "提示", {
+          confirmButtonText: "确定",
+          cancelButtonText: "取消",
+          type: "warning"
+        });
       }
     }
   }
