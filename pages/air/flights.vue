@@ -4,7 +4,7 @@
       <!-- 顶部过滤列表 -->
       <div class="flights-content">
         <!-- 过滤条件 -->
-        <div></div>
+        <FlightsFilters :data="cacheFlightData" @filterData='filterData'></FlightsFilters>
 
         <!-- 航班头部布局 -->
         <FlightsListHead></FlightsListHead>
@@ -38,14 +38,25 @@
 import FlightsListHead from "@/components/air/flightsListHead";
 import moment from "moment";
 import FlightsItem from "@/components/air/flightsItem";
+import FlightsFilters from '@/components/air/flightsFilters'
 export default {
   components: {
     FlightsListHead,
-    FlightsItem
+    FlightsItem,
+    FlightsFilters
   },
   data() {
     return {
-      flightData: {},
+      flightData: {
+        flights:[],
+        info: {},
+        options:{}
+      },
+      cacheFlightData: {
+        flights:[],
+        info: {},
+        options:{}
+      },
       pageIndex: 1,
       pageSize: 5
     };
@@ -57,6 +68,7 @@ export default {
         params: this.$route.query
       }).then(res => {
         console.log(res);
+        this.cacheFlightData = {...res.data}
         this.flightData = res.data;
       });
     },
@@ -66,6 +78,11 @@ export default {
     },
     handleCurrentChange(value){
       this.pageIndex = value;
+    },
+    filterData(value){
+      //console.log(value);
+      this.flightData.flights = value;
+      this.flightData.total = value.length
     }
   },
   mounted() {

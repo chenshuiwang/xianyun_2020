@@ -1,13 +1,5 @@
 <template>
   <div class="search-form">
-    <!-- <el-autocomplete
-      v-model="form.departCity"
-      :fetch-suggestions="queryDepartSearch"
-      placeholder="请搜索出发城市"
-      @select="handleSelect"
-      class="el-autocomplete"
-    ></el-autocomplete>-->
-    <!-- 头部tab切换 -->
     <el-row type="flex" class="search-tab">
       <span
         v-for="(item, index) in tabs"
@@ -86,7 +78,7 @@ export default {
       desData: [],
       pickerOptions1: {
         disabledDate(time) {
-          return time.getTime()+3600 * 1000 * 24 < Date.now();
+          return time.getTime() + 3600 * 1000 * 24 < Date.now();
         }
       }
     };
@@ -98,7 +90,38 @@ export default {
         cb([]);
         return;
       }
-      this.$axios({
+      // this.$axios({
+      //   url: "/airs/city",
+      //   params: {
+      //     name: value
+      //   }
+      // }).then(res => {
+      //   //console.log(res);
+      //   const arr = res.data.data.map(v => {
+      //     v.value = v.name.replace("市", "");
+      //     return v;
+      //   });
+      //   this.defartData = arr;
+      //   cb(arr);
+      // });
+      this.querySearch(this.form.departCity).then(arr => {
+          this.defartData = arr;
+          cb(arr);
+      })
+    },
+    queryDestSearch(value, cb) {
+      if (!value) {
+        this.desData = [];
+        cb([]);
+        return;
+      }
+      this.querySearch(this.form.destCity).then(arr => {
+        this.desData = arr;
+        cb(arr);
+      });
+    },
+    querySearch(value) {
+      return this.$axios({
         url: "/airs/city",
         params: {
           name: value
@@ -109,30 +132,8 @@ export default {
           v.value = v.name.replace("市", "");
           return v;
         });
-        this.defartData = arr;
-        cb(arr);
+        return arr;
       });
-    },
-    queryDestSearch(value, cb) {
-      if (value) {
-        this.$axios({
-          url: "/airs/city",
-          params: {
-            name: value
-          }
-        }).then(res => {
-          //console.log(res);
-          const arr = res.data.data.map(v => {
-            v.value = v.name.replace("市", "");
-            return v;
-          });
-          this.desData = arr;
-          cb(arr);
-        });
-      } else {
-        this.desData = [];
-        cb([]);
-      }
     },
     handleDepartSelect(item) {
       this.form.departCity = item.value;
