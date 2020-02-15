@@ -123,7 +123,7 @@ export default {
   },
   computed: {
     filter() {
-        console.log(213)
+        //console.log(213)
       let newFlights = this.data.flights.filter(v => {
         let valid = true;
         if(this.company && this.company != v.airline_name){

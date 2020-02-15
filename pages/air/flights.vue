@@ -29,6 +29,7 @@
       <!-- 侧边栏 -->
       <div class="aside">
         <!-- 侧边栏组件 -->
+        <FlightsAside></FlightsAside>
       </div>
     </el-row>
   </section>
@@ -39,11 +40,13 @@ import FlightsListHead from "@/components/air/flightsListHead";
 import moment from "moment";
 import FlightsItem from "@/components/air/flightsItem";
 import FlightsFilters from '@/components/air/flightsFilters'
+import FlightsAside from '@/components/air/flightsAside'
 export default {
   components: {
     FlightsListHead,
     FlightsItem,
-    FlightsFilters
+    FlightsFilters,
+    FlightsAside
   },
   data() {
     return {
@@ -97,6 +100,11 @@ export default {
         (this.pageIndex-1) * this.pageSize,this.pageIndex * this.pageSize
       )
       return arr;
+    }
+  },
+  watch:{
+    $route(){
+      this.getData()
     }
   }
 };

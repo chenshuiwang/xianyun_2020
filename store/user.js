@@ -9,6 +9,7 @@ export const mutations = {
  }
 }
 export const actions = {
+  //用户登录
     login(store,data){
         return this.$axios({
             url: "/accounts/login",
@@ -19,6 +20,7 @@ export const actions = {
             store.commit("setUserInfo", res.data)
           });
     },
+    //获取验证码
     getCaptcha(store,text){
         return this.$axios({
             url: "/captchas",
