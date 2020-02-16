@@ -5,23 +5,24 @@
             <OrderForm :data='infoData'></OrderForm>
 
             <!-- 侧边栏 -->
-            <div class="aside">
-                          
-            </div>
+            <OrderAside :data='infoData'></OrderAside>
         </el-row>
     </div>
 </template>
 
 <script>
-import OrderForm from '../../components/air/orderForm'
+import OrderForm from '@/components/air/orderForm'
+import OrderAside from '@/components/air/orderAside'
 export default {
     components:{
-        OrderForm
+        OrderForm,
+        OrderAside
     },
     data(){
         return {
             infoData: {
-                insurances: []
+                insurances: [],
+                seat_infos: {}
             }
         }
     },
@@ -33,8 +34,8 @@ export default {
                 seat_xid: query.seat_xid
             }
         }).then(res => {
-           // console.log(res)
             this.infoData = res.data;
+            console.log(this.infoData)
         })
     }
 }

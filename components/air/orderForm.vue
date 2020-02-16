@@ -63,19 +63,17 @@
         <el-button type="warning" class="submit" @click="handleSubmit">提交订单</el-button>
       </div>
     </div>
+    {{allPrice}}
   </div>
 </template>
 
 <script>
 export default {
-  mounted() {
-    console.log(this.data);
-  },
   methods: {
     // 添加乘机人
     handleAddUsers() {
       this.form.users = [
-        ...this.users,
+        ...this.form.users,
         {
           username: "",
           id: ""
@@ -201,6 +199,29 @@ export default {
     data: {
       type: Object,
       default: {}
+    }
+  },
+  //计算总价
+  computed:{
+    allPrice(){
+      if(!this.data.seat_infos){
+        return;
+      }
+      let price = 0;
+      //加上单价
+      price += this.data.seat_infos.org_settle_price;
+      //加上机建燃油费
+      price += this.data.airport_tax_audlet;
+      //加上保险费
+      this.data.insurances.forEach(v => {
+        if(this.form.insurances.indexOf(v.id) > -1){
+          price += v.price
+        }
+      })
+      //乘与人数
+      price *= this.form.users.length;
+      this.$store.commit('air/setAllPrice',price)
+      return ''
     }
   }
 };
