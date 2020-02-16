@@ -102,10 +102,18 @@ export default {
       return arr;
     }
   },
-  watch:{
-    $route(){
-      this.getData()
-    }
+  //组建的复用
+  // watch:{
+  //   $route(){
+  //     this.getData()
+  //   }
+  // }
+  
+  //使用路由守卫实现组建的复用
+  beforeRouteUpdate(to, from, next){
+    next();
+    this.pageIndex = 1;
+    this.getData()
   }
 };
 </script>

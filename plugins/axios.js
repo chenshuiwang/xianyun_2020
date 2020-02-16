@@ -6,5 +6,10 @@ export default (data) => {
         if(statusCode === 400){
             Message.error(message)
         }
+        if(statusCode === 401 || statusCode === 403){
+            data.redirect(200,'/user/login',{
+                returnUrl: data.route.fullPath
+            })
+        }
     })
 } 

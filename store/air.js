@@ -5,6 +5,7 @@ export const state = () => {
 } 
 export const mutations = {
     setHistory(state,data){
-        state.history.push(data);
+        state.history.unshift(data);
+        state.history.length = 5;
     }
 }
