@@ -7,7 +7,9 @@ export const state = () => {
 export const mutations = {
     setHistory(state,data){
         state.history.unshift(data);
-        state.history.length = 5;
+        if(state.history.length > 5){
+            state.history.length = 5;
+        }  
     },
     setAllPrice(state,data){
         state.allPrice = data;

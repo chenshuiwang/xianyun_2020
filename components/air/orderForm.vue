@@ -83,7 +83,7 @@ export default {
 
     // 移除乘机人
     handleDeleteUser(index) {
-      this.users.splice(index, 1);
+      this.form.users.splice(index, 1);
     },
 
     // 发送手机验证码
@@ -160,7 +160,10 @@ export default {
         console.log(res);
         if(res.data.message === '订单提交成功'){
           this.$router.push({
-            path: '/air/pay'
+            path: '/air/pay',
+            query:{
+              id:res.data.data.id
+            }
           })
         }else{
           this.$message.error(res.data.message)
